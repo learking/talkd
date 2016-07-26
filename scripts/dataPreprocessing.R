@@ -1,5 +1,8 @@
 setwd("/home/suhasini/workspace/talkingData/")
 
+# load libraries
+library(sqldf)
+
 # read-in training label data
 train_label_DT = read.csv("./data/gender_age_train.csv", colClasses="character")
 
@@ -29,3 +32,23 @@ test_device_DT = read.csv("./data/gender_age_test.csv", colClasses="character")
 device_DT = data.frame(device_id = c(train_label_DT$device_id, test_device_DT$device_id))
 
 # add phone brand and device model to device_DT
+phone_DT = read.csv("./data/phone_brand_device_model.csv", colClasses="character")
+# 1)
+dim(phone_DT)
+# [1] 187245      3
+length(unique(phone_DT$device_id))
+# [1] 186716
+sum(duplicated(phone_DT$device_id))
+# [1] 529
+dup_device_list = phone_DT[duplicated(phone_DT$device_id),]$device_id
+dup_device_DT = phone_DT[which(phone_DT$device_id %in% dup_device_list),]
+dup_device_DT = dup_device_DT[with(dup_device_DT, order(device_id)),]
+# Conclusion: device_id not unique in phone_DT
+# 2)
+phone_uniq_DT = phone_DT[!duplicated(phone_DT$device_id),]
+# 3)
+input_DT = merge(device_DT, phone_uniq_DT, by="device_id")
+
+###########################################################################################################################
+# Feature engineering
+
