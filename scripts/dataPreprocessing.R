@@ -52,3 +52,17 @@ input_DT = merge(device_DT, phone_uniq_DT, by="device_id")
 ###########################################################################################################################
 # Feature engineering
 
+# App category
+# Problem def: 
+# 1) find out App categories (or groups of categories) that can differentiate gender
+# 2) age group within gender
+
+# device_id => event_id : events.csv (3,252,951)
+# event_id => app_id: app_events.csv (32,473,068)
+# app_id => label_id: app_labels.csv (459,944)
+# label_id => label_categories (931)
+
+
+# join table: events.csv, app_events.csv, app_labels.csv
+app_event_DT = read.csv("", colClasses="character")
+app_label_DT = read.csv("./data/app_labels.csv", colClasses="character")
